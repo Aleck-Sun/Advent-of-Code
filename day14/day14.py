@@ -1,20 +1,14 @@
-from heapq import heappush, heappop
-
-CYCLES_SUBSET = 10000
 BILLION = 1000000000
 
 def move_north(grid):
     for j in range(len(grid[0])):
-        periods = []
+        last_period = 0
         for i in range(len(grid)):
-            if grid[i][j] == '.':
-                heappush(periods, i)
-            elif grid[i][j] == '#':
-                periods = []
-            elif grid[i][j] == 'O' and periods:
-                swap_i = heappop(periods)
-                grid[i][j], grid[swap_i][j] = grid[swap_i][j], grid[i][j]
-                heappush(periods, i)
+            if grid[i][j] == '#':
+                last_period = i + 1
+            elif grid[i][j] != '.':
+                grid[i][j], grid[last_period][j] = grid[last_period][j], grid[i][j]
+                last_period += 1
 
 def rotate_clockwise(grid):
     return list([list(e) for e in zip(*grid[::-1])])
@@ -37,7 +31,7 @@ def day14_part_two():
 
         found = set()
         num_found, cycles = 0, []
-        for _ in range(CYCLES_SUBSET):
+        for _ in range(BILLION):
             for _ in range(4):
                 move_north(grid)
                 grid = rotate_clockwise(grid)
@@ -64,4 +58,5 @@ def day14_part_two():
         return (second_cycle + cycles)[(BILLION - first_cycle_length) % (len(cycles) + second_cycle_length) - 1]
 
 if __name__ == '__main__':
+    print(day14_part_one())
     print(day14_part_two())
