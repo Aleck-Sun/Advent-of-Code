@@ -34,10 +34,17 @@ def day12_part_two():
         for line in input:
             schema = list("?".join([line.split()[0]] * 5))
             groups = [int(x) for x in ",".join([line.split()[1]] * 5).split(',')]
-
+            sum += get_combinations(schema, groups, 0)
             #sum += get_combinations(schema, groups, 0)
         
         return sum
 
 if __name__ == "__main__":
     print(day12_part_two())
+    # state  = index in schema
+    # group  = index in groups
+    # current = group length
+    # Initial value of 0 dp(i, j, k)
+    # I increments by 1
+    # J increments if group finished
+    # k increments if u see pound sign
